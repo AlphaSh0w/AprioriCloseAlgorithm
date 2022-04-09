@@ -18,7 +18,9 @@ int main()
     std::cout << "took " << timer.Mark() << " miliseconds\n";
 
     ItemsetGenerator oneGenerator{1};
-    oneGenerator.GenerateItemsets(dataset.GetDocument());
+    ItemsetGenerator twoGenerator{2};
+    oneGenerator.GenerateFirstItemsets(dataset.GetDocument());
+    twoGenerator.GenerateItemsets(oneGenerator);
     
     //Save the new document to disk
     dataset.SaveDocument("Airlines-discretized.csv");
