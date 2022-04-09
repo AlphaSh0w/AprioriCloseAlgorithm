@@ -2,19 +2,24 @@
 #include <iostream>
 #include "DocumentLoader.h"
 #include "Timer.h"
+#include "ItemsetGenerator.h"
+
 int main()
 {
     std::cout << "Loading csv ... ";
     Timer<std::chrono::milliseconds> timer{};
     //Load the airlines csv
-    DocumentLoader itemset{ "airlines.csv" };
+    DocumentLoader dataset{ "airlines.csv" };
     std::cout << "took " << timer.Mark() << " miliseconds\n";
 
     std::cout << "Discretizing ... ";
     timer.Mark();
-    itemset.Discretize<float>({"Flight","Time","Length"},{10,10,10});
+    dataset.Discretize<float>({"Flight","Time","Length"},{10,10,10});
     std::cout << "took " << timer.Mark() << " miliseconds\n";
 
+    ItemsetGenerator oneGenerator{1};
+    oneGenerator.GenerateItemsets(dataset.GetDocument());
+    
     //Save the new document to disk
-    itemset.SaveDocument("Airlines-discretized.csv");
+    dataset.SaveDocument("Airlines-discretized.csv");
 }
