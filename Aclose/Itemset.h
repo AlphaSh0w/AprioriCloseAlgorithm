@@ -11,7 +11,7 @@ public:
 	Itemset(std::vector<std::pair<size_t, std::string>> items, const Itemset* first, const Itemset* second);
 
 	//Calculates the TID directly from the TIDs of the merged itemsets.
-	void CalculateMergedTID();
+	void CalculateTID();
 
 	//Indicates if the provided itemset shares the first k items as this one.
 	bool HasSameFirstKItems(const Itemset& other, size_t k) const;

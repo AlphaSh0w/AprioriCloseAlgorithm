@@ -76,10 +76,53 @@ void ItemsetGenerator::GenerateItemsets(const ItemsetGenerator& previousGenerato
 	}
 }
 
+void ItemsetGenerator::CalculateTIDsMultiThreaded()
+{
+	const size_t minItemsPerThread = 100;
+	size_t hardwareThreadCount = std::thread::hardware_concurrency();
+	size_t threadCount = std::min(itemsets.size() / minItemsPerThread, hardwareThreadCount * 2);
+	size_t step = 0;
+	if (threadCount != 0)
+	{
+		//Divide the itemsets between all threads evenly.
+		step = itemsets.size() / threadCount;
+		std::vector<std::thread> workers;
+		auto worker = [this](size_t start, size_t end) {
+			for (size_t i = start; i < end; ++i)
+			{
+				itemsets[i].CalculateTID();
+			}
+			//for (auto it = std::next(itemsets.begin(), start); it != std::next(itemsets.begin(), end); ++it)
+			//{
+			//	it->CalculateTID();
+			//}
+		};
+		for (size_t i = 0; i < threadCount; ++i)
+		{
+			workers.push_back(std::thread{ worker, step * i, step * (i + 1)});
+		}
+		for (auto& worker : workers)
+		{
+			worker.join();
+		}
+	}
+	//Finish the leftover itemsets on the main thread
+	for (auto it = std::next(itemsets.begin(), step * threadCount); it != itemsets.end(); ++it)
+	{
+		it->CalculateTID();
+	}
+}
+
+bool ItemsetGenerator::IsEmpty() const
+{
+	return itemsets.empty();
+}
+
 size_t ItemsetGenerator::GetLevel() const
 {
 	return level;
 }
+
 
 const std::vector<Itemset>& ItemsetGenerator::GetItemsets() const
 {

@@ -11,8 +11,12 @@ public:
 	void GenerateFirstItemsets(const rapidcsv::Document& document);
 	//Generates the (level) Itemsets from the (level - 1) generator.
 	void GenerateItemsets(const ItemsetGenerator& previousGenerator);
+	//Calculates the TIDs of the itemsets.
+	void CalculateTIDsMultiThreaded();
 
+	bool IsEmpty() const;
 	size_t GetLevel() const;
+	
 private:
 	const std::vector<Itemset>& GetItemsets() const;
 private:

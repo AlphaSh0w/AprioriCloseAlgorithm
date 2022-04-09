@@ -15,6 +15,16 @@ Itemset::Itemset(std::vector<std::pair<size_t, std::string>> items, const Itemse
 {
 }
 
+void Itemset::CalculateTID()
+{
+	//Performs a union between the TIDs of the two itemsets that were used to create this itemset.
+	std::set_intersection(
+		first->tid.begin(), first->tid.end(),
+		second->tid.begin(), second->tid.end(),
+		std::back_inserter(tid)
+	);
+}
+
 bool Itemset::HasSameFirstKItems(const Itemset& other, size_t k) const
 {
 	assert(items.size() >= k && other.items.size() >= k);//Both itemsets have to be longer or equal to k.

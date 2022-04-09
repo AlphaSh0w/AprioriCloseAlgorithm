@@ -21,7 +21,7 @@ int main()
     ItemsetGenerator twoGenerator{2};
     oneGenerator.GenerateFirstItemsets(dataset.GetDocument());
     twoGenerator.GenerateItemsets(oneGenerator);
-    
+    twoGenerator.CalculateTIDsMultiThreaded();
     //Save the new document to disk
     dataset.SaveDocument("Airlines-discretized.csv");
 }
