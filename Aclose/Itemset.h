@@ -13,10 +13,14 @@ public:
 	void CalculateTID();
 	//Indicates if the provided itemset shares the first k items as this one.
 	bool HasSameFirstKItems(const Itemset& other, size_t k) const;
+	//Indicates if the TID of this itemset is included in the TID of the other itemset.
+	bool IsTIDIncluded(const Itemset& other) const;
 	//Indicates if the itemset is possible (does not contain two values from the same column).
 	bool IsValid() const;
-	//Performs union between the items.
+	//Performs a union between the items and returns the result in an itemset.
 	Itemset operator +(const Itemset& rhs) const;
+	//Performs a union between the items and stores the result in this itemset.
+	Itemset& operator +=(const Itemset& rhs);
 	float GetSupport(const size_t rowCount) const;
 private:
 	std::vector<std::pair<size_t, std::string>> items;

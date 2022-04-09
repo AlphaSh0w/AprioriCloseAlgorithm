@@ -15,6 +15,7 @@ public:
 	void CalculateTIDsMultiThreaded();
 	//Removes the unfrequent itemsets.
 	void PruneUnfrequentItemsets(float minSupport, size_t rowCount);
+	void CalculateClosures();
 	bool IsEmpty() const;
 	size_t GetLevel() const;
 	

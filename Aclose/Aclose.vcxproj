@@ -158,6 +158,7 @@
   <ItemGroup>
     <None Include="Airlines-discretized.csv" />
     <None Include="airlines.csv" />
+    <None Include="ClassData.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

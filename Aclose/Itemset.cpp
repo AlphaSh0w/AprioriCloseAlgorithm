@@ -17,7 +17,8 @@ Itemset::Itemset(std::vector<std::pair<size_t, std::string>> items, const Itemse
 
 void Itemset::CalculateTID()
 {
-	//Performs a union between the TIDs of the two itemsets that were used to create this itemset.
+	assert(first != nullptr && second != nullptr); //To calculate its TID, this itemset needs to be created from a union of two other itemsets.
+	//Performs an intersection between the TIDs of the two itemsets that were used to create this itemset.
 	std::set_intersection(
 		first->tid.begin(), first->tid.end(),
 		second->tid.begin(), second->tid.end(),
@@ -40,6 +41,12 @@ bool Itemset::HasSameFirstKItems(const Itemset& other, size_t k) const
 	return bSame;
 }
 
+bool Itemset::IsTIDIncluded(const Itemset& other) const
+{
+	//The smallest TID needs to go as a first argument.
+	return std::includes(other.tid.begin(), other.tid.end(), tid.begin(), tid.end());
+}
+
 bool Itemset::IsValid() const
 {
 	auto result = std::adjacent_find(items.begin(), items.end(),
@@ -58,6 +65,18 @@ Itemset Itemset::operator+(const Itemset& rhs) const
 		std::back_inserter(itemsUnion)
 	);
 	return Itemset(itemsUnion,this,&rhs);
+}
+
+Itemset& Itemset::operator+=(const Itemset& rhs)
+{
+	std::vector<std::pair<size_t, std::string>> itemsUnion;
+	std::set_union(
+		items.begin(), items.end(),
+		rhs.items.begin(), rhs.items.end(),
+		std::back_inserter(itemsUnion)
+	);
+	items = std::move(itemsUnion);
+	return *this;
 }
 
 float Itemset::GetSupport(const size_t rowCount) const

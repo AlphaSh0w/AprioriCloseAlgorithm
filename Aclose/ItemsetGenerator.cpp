@@ -117,6 +117,28 @@ void ItemsetGenerator::PruneUnfrequentItemsets(float minSupport, size_t rowCount
 	itemsets.erase(toErase, itemsets.end());
 }
 
+void ItemsetGenerator::CalculateClosures()
+{
+	//Reserve the space for closures.
+	closures.reserve(itemsets.size());
+	for (size_t i = 0; i < itemsets.size(); ++i)
+	{
+		//The closure of an itemset contains at least itself.
+		Itemset closure{itemsets[i]};
+		//If another itemset has the same TID, add its items to the closure.
+		for (size_t j = 0; j < itemsets.size(); ++j)
+		{
+			if(i == j)
+				break;
+			if (itemsets[i].IsTIDIncluded(itemsets[j]))
+			{
+				closure += itemsets[j];
+			}
+		}
+		closures.emplace_back(std::move(closure));
+	}
+}
+
 bool ItemsetGenerator::IsEmpty() const
 {
 	return itemsets.empty();
