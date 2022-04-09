@@ -64,7 +64,6 @@ void ItemsetGenerator::GenerateItemsets(const ItemsetGenerator& previousGenerato
 			//Check if they have (level - 2) first items in common.
 			if (previousItemsets[i].HasSameFirstKItems(previousItemsets[j], level - 2))
 			{
-				//Get their union.
 				Itemset itemsetUnion = previousItemsets[i] + previousItemsets[j];
 				//Check if this combination of items is possible.
 				if (itemsetUnion.IsValid())
@@ -79,8 +78,8 @@ void ItemsetGenerator::GenerateItemsets(const ItemsetGenerator& previousGenerato
 void ItemsetGenerator::CalculateTIDsMultiThreaded()
 {
 	const size_t minItemsPerThread = 100;
-	size_t hardwareThreadCount = std::thread::hardware_concurrency();
-	size_t threadCount = std::min(itemsets.size() / minItemsPerThread, hardwareThreadCount * 2);
+	const size_t hardwareThreadCount = std::thread::hardware_concurrency();
+	const size_t threadCount = std::min(itemsets.size() / minItemsPerThread, hardwareThreadCount * 2);
 	size_t step = 0;
 	if (threadCount != 0)
 	{
@@ -92,10 +91,6 @@ void ItemsetGenerator::CalculateTIDsMultiThreaded()
 			{
 				itemsets[i].CalculateTID();
 			}
-			//for (auto it = std::next(itemsets.begin(), start); it != std::next(itemsets.begin(), end); ++it)
-			//{
-			//	it->CalculateTID();
-			//}
 		};
 		for (size_t i = 0; i < threadCount; ++i)
 		{
@@ -107,10 +102,19 @@ void ItemsetGenerator::CalculateTIDsMultiThreaded()
 		}
 	}
 	//Finish the leftover itemsets on the main thread
-	for (auto it = std::next(itemsets.begin(), step * threadCount); it != itemsets.end(); ++it)
+	for (size_t i = step * threadCount; i < itemsets.size(); ++i)
 	{
-		it->CalculateTID();
+		itemsets[i].CalculateTID();
 	}
+}
+
+void ItemsetGenerator::PruneUnfrequentItemsets(float minSupport, size_t rowCount)
+{
+	auto toErase = std::remove_if(itemsets.begin(), itemsets.end(),
+		[minSupport,rowCount](const Itemset& itemset){
+			return itemset.GetSupport(rowCount) < minSupport;
+		});
+	itemsets.erase(toErase, itemsets.end());
 }
 
 bool ItemsetGenerator::IsEmpty() const

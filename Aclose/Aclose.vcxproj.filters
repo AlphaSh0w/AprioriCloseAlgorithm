@@ -49,5 +49,8 @@
     <None Include="airlines.csv">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Airlines-discretized.csv">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

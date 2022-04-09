@@ -28,26 +28,24 @@ void Itemset::CalculateTID()
 bool Itemset::HasSameFirstKItems(const Itemset& other, size_t k) const
 {
 	assert(items.size() >= k && other.items.size() >= k);//Both itemsets have to be longer or equal to k.
-	bool inCommon = true;
+	bool bSame = true;
 	for (size_t i = 0; i < k; ++i)
 	{
 		if (items[i] != other.items[i])
 		{
-			inCommon = false;
+			bSame = false;
 			break;
 		}
 	}
-	return inCommon;
+	return bSame;
 }
 
 bool Itemset::IsValid() const
 {
-	auto result = std::adjacent_find(items.begin(),
-		items.end(),
+	auto result = std::adjacent_find(items.begin(), items.end(),
 		[](const std::pair<size_t, std::string>& first, const std::pair<size_t, std::string>& second) {
 			return first.first == second.first;
 		});
-
 	return result == items.end();
 }
 
@@ -60,4 +58,9 @@ Itemset Itemset::operator+(const Itemset& rhs) const
 		std::back_inserter(itemsUnion)
 	);
 	return Itemset(itemsUnion,this,&rhs);
+}
+
+float Itemset::GetSupport(const size_t rowCount) const
+{
+	return static_cast<float>(tid.size()) / rowCount;
 }

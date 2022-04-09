@@ -20,8 +20,10 @@ int main()
     ItemsetGenerator oneGenerator{1};
     ItemsetGenerator twoGenerator{2};
     oneGenerator.GenerateFirstItemsets(dataset.GetDocument());
+    oneGenerator.PruneUnfrequentItemsets(0.05f, dataset.GetDocument().GetRowCount());
     twoGenerator.GenerateItemsets(oneGenerator);
     twoGenerator.CalculateTIDsMultiThreaded();
+    twoGenerator.PruneUnfrequentItemsets(0.05f, dataset.GetDocument().GetRowCount());
     //Save the new document to disk
     dataset.SaveDocument("Airlines-discretized.csv");
 }

@@ -13,7 +13,8 @@ public:
 	void GenerateItemsets(const ItemsetGenerator& previousGenerator);
 	//Calculates the TIDs of the itemsets.
 	void CalculateTIDsMultiThreaded();
-
+	//Removes the unfrequent itemsets.
+	void PruneUnfrequentItemsets(float minSupport, size_t rowCount);
 	bool IsEmpty() const;
 	size_t GetLevel() const;
 	
