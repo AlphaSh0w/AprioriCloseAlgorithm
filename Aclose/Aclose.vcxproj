@@ -143,10 +143,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ACloseAlgorithm.h" />
     <ClInclude Include="DocumentLoader.h" />
+    <ClInclude Include="Itemset.h" />
+    <ClInclude Include="ItemsetGenerator.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ACloseAlgorithm.cpp" />
+    <ClCompile Include="Itemset.cpp" />
+    <ClCompile Include="ItemsetGenerator.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

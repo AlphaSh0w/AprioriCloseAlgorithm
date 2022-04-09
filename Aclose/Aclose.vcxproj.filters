@@ -21,9 +21,27 @@
     <ClInclude Include="DocumentLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ACloseAlgorithm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemsetGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Itemset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemsetGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Itemset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ACloseAlgorithm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
