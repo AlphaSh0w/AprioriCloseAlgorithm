@@ -18,7 +18,7 @@ int main()
     std::cout << "took " << timer.Mark() << " miliseconds\n";
 
     ACloseAlgorithm aClose{dataset.GetDocument()};
-    aClose.Run(0.05);
+    aClose.Run(0.1);
     //Save the new document to disk
-    dataset.SaveDocument("Airlines-discretized.csv");
+    dataset.SaveDocument("ClassData-discretized.csv");
 }

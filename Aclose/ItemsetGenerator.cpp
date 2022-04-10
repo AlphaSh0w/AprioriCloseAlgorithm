@@ -55,6 +55,7 @@ void ItemsetGenerator::GenerateItemsets(const ItemsetGenerator& previousGenerato
 {
 	assert(level != 1); //This function should not be called for generating the first itemsets.
 	assert(level == previousGenerator.GetLevel() + 1); //The previous generator should be exactly one (level) lower than this generator.
+	assert(previousGenerator.GetItemsets().size() > 0); //The previous itemsets should not be empty.
 	//Generate current (level) itemsets by combining the (level - 1) itemsets.
 	const std::vector<Itemset>& previousItemsets = previousGenerator.GetItemsets();
 	for (size_t i = 0; i < previousItemsets.size() - 1; ++i)
