@@ -5,6 +5,8 @@
 class Itemset
 {
 public:
+	//Constructor to create an itemset from a list of items.
+	Itemset(const std::vector<std::pair<size_t, std::string>>& items);
 	//Constructor to create an itemset from a list of items and provide a pre-built TID.
 	Itemset(std::vector<std::pair<size_t, std::string>> items, std::vector<size_t> tid);
 	//Constructor used to indicate which itemsets were merged when creating this itemset.
@@ -23,6 +25,7 @@ public:
 	Itemset operator +(const Itemset& rhs) const;
 	//Performs a union between the items and stores the result in this itemset.
 	Itemset& operator +=(const Itemset& rhs);
+	const std::vector<std::pair<size_t, std::string>>& GetItems() const;
 	float GetSupport(const size_t rowCount) const;
 private:
 	std::vector<std::pair<size_t, std::string>> items;

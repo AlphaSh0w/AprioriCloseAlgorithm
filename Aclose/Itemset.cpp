@@ -1,5 +1,11 @@
 #include "Itemset.h"
 
+Itemset::Itemset(const std::vector<std::pair<size_t, std::string>>& items)
+	:
+	items(items)
+{
+}
+
 Itemset::Itemset(std::vector<std::pair<size_t, std::string>> items, std::vector<size_t> tid)
 	:
 	items(std::move(items)),
@@ -82,6 +88,11 @@ Itemset& Itemset::operator+=(const Itemset& rhs)
 	);
 	items = std::move(itemsUnion);
 	return *this;
+}
+
+const std::vector<std::pair<size_t, std::string>>& Itemset::GetItems() const
+{
+	return items;
 }
 
 float Itemset::GetSupport(const size_t rowCount) const
