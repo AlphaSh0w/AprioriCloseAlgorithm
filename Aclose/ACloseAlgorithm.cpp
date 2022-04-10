@@ -1,12 +1,53 @@
 #include "ACloseAlgorithm.h"
-
-void ACloseAlgorithm::Run()
+#include <assert.h>
+void ACloseAlgorithm::Run(float minSupport)
 {
-	//Generate k-itemsets
-	//if k-itemsets is empty, stop algorithm
-	//if k != 1, eliminate the itemsets that are included in the closures of k-1 itemsets.
-	//Calculate their TIDs
+	assert(kGenerators.empty());//Algorithm should only be ran once.
+	
+	while (true)
+	{
+		//Generate k-itemsets.
+		ItemsetGenerator generator{currentLevel};
+		if (currentLevel == 1)
+		{
+			//Generate the first itemsets from the document.
+			generator.GenerateFirstItemsetsThreaded(document);
+
+		}
+		else
+		{
+			generator.GenerateItemsets(kGenerators.back());
+
+		}
+		//if generator is empty, stop algorithm.
+		if (generator.IsEmpty())
+			break;
+		if(currentLevel != 1)
+			//Calculate their TIDs (gives us their supports).
+			generator.CalculateTIDsThreaded();
+		//Prune unfrequent itemsets.
+		generator.PruneUnfrequentItemsets(minSupport, document.GetRowCount());
+		if(currentLevel != 1)
+			//Prune using closures
+			generator.PruneUsingClosures(kGenerators.back());
+		//Calculate their closure.
+		generator.CalculateClosures();
+		//Add to list of kGenerators.
+		kGenerators.emplace_back(std::move(generator));
+		++currentLevel;
+	}
+	kGenerators.emplace_back(currentLevel);
+	
+	
+	
+	
 	//Calculate their support (Already done in previous step)
-	//Prune unfrequent itemsets
-	//Calculate their closure
+	
+	
+}
+
+ACloseAlgorithm::ACloseAlgorithm(const rapidcsv::Document& document)
+	:
+	document(document)
+{
 }

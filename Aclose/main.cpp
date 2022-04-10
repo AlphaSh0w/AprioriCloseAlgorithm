@@ -2,7 +2,7 @@
 #include <iostream>
 #include "DocumentLoader.h"
 #include "Timer.h"
-#include "ItemsetGenerator.h"
+#include "ACloseAlgorithm.h"
 
 int main()
 {
@@ -17,16 +17,8 @@ int main()
     dataset.Discretize<float>({"raisedhands","VisITedResources","AnnouncementsView","Discussion"}, {10,10,10,10});
     std::cout << "took " << timer.Mark() << " miliseconds\n";
 
-    ItemsetGenerator oneGenerator{1};
-    ItemsetGenerator twoGenerator{2};
-    oneGenerator.GenerateFirstItemsetsThreaded(dataset.GetDocument());
-    oneGenerator.PruneUnfrequentItemsets(0.05f, dataset.GetDocument().GetRowCount());
-    oneGenerator.CalculateClosures();
-    twoGenerator.GenerateItemsets(oneGenerator);
-    twoGenerator.PruneUsingClosures(oneGenerator);
-    twoGenerator.CalculateTIDsThreaded();
-    twoGenerator.PruneUnfrequentItemsets(0.05f, dataset.GetDocument().GetRowCount());
-    twoGenerator.CalculateClosures();
+    ACloseAlgorithm aClose{dataset.GetDocument()};
+    aClose.Run(0.05);
     //Save the new document to disk
     dataset.SaveDocument("Airlines-discretized.csv");
 }
