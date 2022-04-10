@@ -47,6 +47,11 @@ bool Itemset::IsTIDIncluded(const Itemset& other) const
 	return std::includes(other.tid.begin(), other.tid.end(), tid.begin(), tid.end());
 }
 
+bool Itemset::Includes(const Itemset& other) const
+{
+	return std::includes(items.begin(), items.end(), other.items.begin(), other.items.end());
+}
+
 bool Itemset::IsValid() const
 {
 	auto result = std::adjacent_find(items.begin(), items.end(),

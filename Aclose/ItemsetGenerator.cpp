@@ -10,7 +10,7 @@ ItemsetGenerator::ItemsetGenerator(size_t level)
 	assert(level != 0); //Level cannot be 0.
 }
 
-void ItemsetGenerator::GenerateFirstItemsets(const rapidcsv::Document& document)
+void ItemsetGenerator::GenerateFirstItemsetsThreaded(const rapidcsv::Document& document)
 {
 	assert(level == 1);//This function should only be called for generating the first itemsets.
 	std::vector<std::map<std::string, std::vector<size_t>>> tids;
@@ -75,7 +75,7 @@ void ItemsetGenerator::GenerateItemsets(const ItemsetGenerator& previousGenerato
 	}
 }
 
-void ItemsetGenerator::CalculateTIDsMultiThreaded()
+void ItemsetGenerator::CalculateTIDsThreaded()
 {
 	const size_t minItemsPerThread = 100;
 	const size_t hardwareThreadCount = std::thread::hardware_concurrency();
@@ -137,6 +137,23 @@ void ItemsetGenerator::CalculateClosures()
 		}
 		closures.emplace_back(std::move(closure));
 	}
+}
+
+void ItemsetGenerator::PruneUsingClosures(const ItemsetGenerator& previousGenerator)
+{
+	auto& closures = previousGenerator.GetClosures();
+	auto includedInAnyClosure = [closures](const Itemset& itemset) {
+		return std::any_of(closures.begin(), closures.end(), [&itemset](const Itemset& closure) {
+			return closure.Includes(itemset);
+			});
+		};
+	auto toErase = std::remove_if(itemsets.begin(), itemsets.end(), includedInAnyClosure);
+	itemsets.erase(toErase, itemsets.end());
+}
+
+const std::vector<Itemset>& ItemsetGenerator::GetClosures() const
+{
+	return closures;
 }
 
 bool ItemsetGenerator::IsEmpty() const

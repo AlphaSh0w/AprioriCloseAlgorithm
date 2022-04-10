@@ -19,11 +19,12 @@ int main()
 
     ItemsetGenerator oneGenerator{1};
     ItemsetGenerator twoGenerator{2};
-    oneGenerator.GenerateFirstItemsets(dataset.GetDocument());
+    oneGenerator.GenerateFirstItemsetsThreaded(dataset.GetDocument());
     oneGenerator.PruneUnfrequentItemsets(0.05f, dataset.GetDocument().GetRowCount());
     oneGenerator.CalculateClosures();
     twoGenerator.GenerateItemsets(oneGenerator);
-    twoGenerator.CalculateTIDsMultiThreaded();
+    twoGenerator.PruneUsingClosures(oneGenerator);
+    twoGenerator.CalculateTIDsThreaded();
     twoGenerator.PruneUnfrequentItemsets(0.05f, dataset.GetDocument().GetRowCount());
     twoGenerator.CalculateClosures();
     //Save the new document to disk

@@ -15,6 +15,8 @@ public:
 	bool HasSameFirstKItems(const Itemset& other, size_t k) const;
 	//Indicates if the TID of this itemset is included in the TID of the other itemset.
 	bool IsTIDIncluded(const Itemset& other) const;
+	//Indicates if this itemset includes all the items of other.
+	bool Includes(const Itemset& other) const;
 	//Indicates if the itemset is possible (does not contain two values from the same column).
 	bool IsValid() const;
 	//Performs a union between the items and returns the result in an itemset.
