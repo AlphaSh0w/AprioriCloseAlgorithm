@@ -22,6 +22,7 @@ int main()
     timer.Mark();
     aClose.Run(0.1f);
     std::cout << "took " << timer.Mark() << " miliseconds\n";
+
     //Save the new document to disk
     //dataset.SaveDocument("ClassData-discretized.csv");
 }

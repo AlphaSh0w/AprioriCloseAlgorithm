@@ -1,19 +1,19 @@
 #include "Itemset.h"
 
-Itemset::Itemset(const std::vector<std::pair<size_t, std::string>>& items)
+Itemset::Itemset(const std::vector<Item>& items)
 	:
 	items(items)
 {
 }
 
-Itemset::Itemset(std::vector<std::pair<size_t, std::string>> items, std::vector<size_t> tid)
+Itemset::Itemset(std::vector<Item> items, std::vector<size_t> tid)
 	:
 	items(std::move(items)),
 	tid(std::move(tid))
 {
 }
 
-Itemset::Itemset(std::vector<std::pair<size_t, std::string>> items, const Itemset* first, const Itemset* second)
+Itemset::Itemset(std::vector<Item> items, const Itemset* first, const Itemset* second)
 	:
 	items(items),
 	first(first),
@@ -61,7 +61,7 @@ bool Itemset::Includes(const Itemset& other) const
 bool Itemset::IsValid() const
 {
 	auto result = std::adjacent_find(items.begin(), items.end(),
-		[](const std::pair<size_t, std::string>& first, const std::pair<size_t, std::string>& second) {
+		[](const Item& first, const Item& second) {
 			return first.first == second.first;
 		});
 	return result == items.end();
@@ -69,7 +69,7 @@ bool Itemset::IsValid() const
 
 Itemset Itemset::operator+(const Itemset& rhs) const
 {
-	std::vector<std::pair<size_t, std::string>> itemsUnion;
+	std::vector<Item> itemsUnion;
 	std::set_union(
 		items.begin(), items.end(),
 		rhs.items.begin(), rhs.items.end(),
@@ -80,7 +80,7 @@ Itemset Itemset::operator+(const Itemset& rhs) const
 
 Itemset& Itemset::operator+=(const Itemset& rhs)
 {
-	std::vector<std::pair<size_t, std::string>> itemsUnion;
+	std::vector<Item> itemsUnion;
 	std::set_union(
 		items.begin(), items.end(),
 		rhs.items.begin(), rhs.items.end(),
@@ -90,7 +90,7 @@ Itemset& Itemset::operator+=(const Itemset& rhs)
 	return *this;
 }
 
-const std::vector<std::pair<size_t, std::string>>& Itemset::GetItems() const
+const std::vector<Itemset::Item>& Itemset::GetItems() const
 {
 	return items;
 }

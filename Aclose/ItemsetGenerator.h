@@ -19,12 +19,11 @@ public:
 	void CalculateClosures();
 	//Removes itemsets that are included in the closures of the previous generator.
 	void PruneUsingClosures(const ItemsetGenerator& previousGenerator);
+	const std::vector<Itemset>& GetItemsets() const;
 	const std::vector<Itemset>& GetClosures() const;
 	bool IsEmpty() const;
 	size_t GetLevel() const;
 	
-private:
-	const std::vector<Itemset>& GetItemsets() const;
 private:
 	std::vector<Itemset> itemsets;
 	std::vector<Itemset> closures;

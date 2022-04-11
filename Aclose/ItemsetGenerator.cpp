@@ -152,6 +152,11 @@ void ItemsetGenerator::PruneUsingClosures(const ItemsetGenerator& previousGenera
 	itemsets.erase(toErase, itemsets.end());
 }
 
+const std::vector<Itemset>& ItemsetGenerator::GetItemsets() const
+{
+	return itemsets;
+}
+
 const std::vector<Itemset>& ItemsetGenerator::GetClosures() const
 {
 	return closures;
@@ -165,10 +170,4 @@ bool ItemsetGenerator::IsEmpty() const
 size_t ItemsetGenerator::GetLevel() const
 {
 	return level;
-}
-
-
-const std::vector<Itemset>& ItemsetGenerator::GetItemsets() const
-{
-	return itemsets;
 }

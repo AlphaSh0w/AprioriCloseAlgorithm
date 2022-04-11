@@ -30,6 +30,9 @@
     <ClInclude Include="Itemset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Rule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ACloseAlgorithm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

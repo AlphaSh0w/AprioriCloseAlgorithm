@@ -147,6 +147,7 @@
     <ClInclude Include="DocumentLoader.h" />
     <ClInclude Include="Itemset.h" />
     <ClInclude Include="ItemsetGenerator.h" />
+    <ClInclude Include="Rule.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +155,7 @@
     <ClCompile Include="Itemset.cpp" />
     <ClCompile Include="ItemsetGenerator.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Rule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Airlines-discretized.csv" />
