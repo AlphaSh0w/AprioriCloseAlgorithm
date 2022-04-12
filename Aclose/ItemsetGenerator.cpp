@@ -137,6 +137,7 @@ void ItemsetGenerator::CalculateClosures()
 		for (size_t j = 0; j < itemsets.size(); ++j)
 		{
 			if(i == j)
+				continue;
 				break;
 			if (itemsets[i].IsTIDIncluded(itemsets[j]))
 			{
