@@ -23,6 +23,8 @@ public:
 	bool Includes(const Itemset& other) const;
 	//Indicates if the itemset is possible (does not contain two values from the same column).
 	bool IsValid() const;
+	//Indicates if the itemset contains the same items as other.
+	bool hasSameItems(const Itemset& other) const;
 	//Performs a union between the items and returns the result in an itemset.
 	Itemset operator +(const Itemset& rhs) const;
 	//Performs a union between the items and stores the result in this itemset.

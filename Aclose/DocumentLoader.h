@@ -36,8 +36,12 @@ public:
 		return document;
 	}
 
+	std::vector<std::string> GetDocumentColumnNames()
+	{
+		return document.GetColumnNames();
+	}
+
 public:
-	
 	/**
 	 * @brief Applies Equal-Width discretization on the specified column using the given number of bins.
 	 * @tparam T : The type used to interpret the values of the column.

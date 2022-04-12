@@ -35,16 +35,7 @@ void Itemset::CalculateTID()
 bool Itemset::HasSameFirstKItems(const Itemset& other, size_t k) const
 {
 	assert(items.size() >= k && other.items.size() >= k);//Both itemsets have to be longer or equal to k.
-	bool bSame = true;
-	for (size_t i = 0; i < k; ++i)
-	{
-		if (items[i] != other.items[i])
-		{
-			bSame = false;
-			break;
-		}
-	}
-	return bSame;
+	return std::equal(items.begin(), items.begin()+k,other.items.begin());
 }
 
 bool Itemset::IsTIDIncluded(const Itemset& other) const
@@ -65,6 +56,11 @@ bool Itemset::IsValid() const
 			return first.first == second.first;
 		});
 	return result == items.end();
+}
+
+bool Itemset::hasSameItems(const Itemset& other) const
+{
+	return HasSameFirstKItems(other, items.size());
 }
 
 Itemset Itemset::operator+(const Itemset& rhs) const

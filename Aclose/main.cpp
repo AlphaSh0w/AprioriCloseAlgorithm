@@ -20,9 +20,15 @@ int main()
     ACloseAlgorithm aClose{dataset.GetDocument()};
     std::cout << "Running AClose Algorithm ... ";
     timer.Mark();
-    aClose.Run(0.1f);
+    aClose.Run(0.2f);
     std::cout << "took " << timer.Mark() << " miliseconds\n";
 
+    std::cout << "\nDisplaying " << aClose.GetRules().size() << " rules : \n";
+    for (const auto& rule : aClose.GetRules())
+    {
+        auto columnNames = dataset.GetDocumentColumnNames();
+        std::cout << rule.ToString(columnNames);
+    }
     //Save the new document to disk
     //dataset.SaveDocument("ClassData-discretized.csv");
 }
