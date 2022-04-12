@@ -17,6 +17,7 @@ void ItemsetGenerator::GenerateFirstItemsetsThreaded(const rapidcsv::Document& d
 	//Allocate the necessarry memory to hold the TIDs
 	tids.resize(document.GetColumnCount());
 	std::vector<std::thread> workers;
+	std::cout << "Generating the TIDs from the document, using " << document.GetColumnCount() << " threads (1 thread for each column)...\n";
 	//Go through the document and generate the TIDs.
 	for (size_t iColumn = 0; iColumn < document.GetColumnCount(); ++iColumn)
 	{
@@ -49,6 +50,7 @@ void ItemsetGenerator::GenerateFirstItemsetsThreaded(const rapidcsv::Document& d
 			itemsets.emplace_back(std::vector{std::pair{iColumn,valueTIDpair.first}},std::move(valueTIDpair.second));
 		}
 	}
+	std::cout << "Generated " << itemsets.size() << " 1-Itemsets and their TIDs.\n";
 }
 
 void ItemsetGenerator::GenerateItemsets(const ItemsetGenerator& previousGenerator)
@@ -84,6 +86,7 @@ void ItemsetGenerator::CalculateTIDsThreaded()
 	size_t step = 0;
 	if (threadCount != 0)
 	{
+		std::cout << "Calculating TIDs using "<< threadCount << " thread(s)...\n";
 		//Divide the itemsets between all threads evenly.
 		step = itemsets.size() / threadCount;
 		std::vector<std::thread> workers;
@@ -101,6 +104,10 @@ void ItemsetGenerator::CalculateTIDsThreaded()
 		{
 			worker.join();
 		}
+	}
+	else
+	{
+		std::cout << "Calculating TIDs using main thread...\n";
 	}
 	//Finish the leftover itemsets on the main thread
 	for (size_t i = step * threadCount; i < itemsets.size(); ++i)
