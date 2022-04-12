@@ -7,6 +7,7 @@ class Itemset
 public:
 	typedef std::pair<size_t, std::string> Item;
 public:
+	Itemset() = default;
 	//Constructor to create an itemset from a list of items.
 	Itemset(const std::vector<Item>& items);
 	//Constructor to create an itemset from a list of items and provide a pre-built TID.

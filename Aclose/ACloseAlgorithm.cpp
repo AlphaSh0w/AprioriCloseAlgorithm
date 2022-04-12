@@ -57,8 +57,7 @@ bool ACloseAlgorithm::CreateKGenerator(float minSupport)
 		std::cout << "Stopping algorithm.\n";
 		return false;
 	}
-	std::cout << "Generating closures for " << generator.GetItemsets().size() << " itemsets.\n";
-	generator.CalculateClosures();
+	generator.CalculateClosuresThreaded();
 	kGenerators.emplace_back(std::move(generator));
 	++currentLevel;
 	return true;

@@ -17,6 +17,7 @@ public:
 	void PruneUnfrequentItemsets(float minSupport, size_t rowCount);
 	//Calculates the closure of each itemset.
 	void CalculateClosures();
+	void CalculateClosuresThreaded();
 	//Removes itemsets that are included in the closures of the previous generator.
 	void PruneUsingClosures(const ItemsetGenerator& previousGenerator);
 	const std::vector<Itemset>& GetItemsets() const;

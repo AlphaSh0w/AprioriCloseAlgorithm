@@ -138,13 +138,76 @@ void ItemsetGenerator::CalculateClosures()
 		{
 			if(i == j)
 				continue;
-				break;
 			if (itemsets[i].IsTIDIncluded(itemsets[j]))
 			{
 				closure += itemsets[j];
 			}
 		}
 		closures.emplace_back(std::move(closure));
+	}
+}
+
+void ItemsetGenerator::CalculateClosuresThreaded()
+{
+	const size_t minItemsPerThread = 100;
+	const size_t hardwareThreadCount = std::thread::hardware_concurrency();
+	const size_t threadCount = std::min(itemsets.size() / minItemsPerThread, hardwareThreadCount * 2);
+	size_t step = 0;
+	if (threadCount != 0)
+	{
+		std::cout << "Calculating closures for " << itemsets.size() <<" using " << threadCount << " thread(s)...\n";
+		//Reserve the space for closures.
+		closures.resize(itemsets.size());
+		//Divide the closures between all threads evenly.
+		step = itemsets.size() / threadCount;
+		std::vector<std::thread> workers;
+		auto worker = [this](size_t start, size_t end) {
+			for (size_t i = start; i < end; ++i)
+			{
+				//The closure of an itemset contains at least itself.
+				Itemset closure{ itemsets[i].GetItems() };
+				//If another itemset has the same TID, add its items to the closure.
+				for (size_t j = 0; j < itemsets.size(); ++j)
+				{
+					if (i == j)
+						continue;
+					if (itemsets[i].IsTIDIncluded(itemsets[j]))
+					{
+						closure += itemsets[j];
+					}
+				}
+				closures[i] = std::move(closure);
+			}
+		};
+		for (size_t i = 0; i < threadCount; ++i)
+		{
+			workers.push_back(std::thread{ worker, step * i, step * (i + 1) });
+		}
+		for (auto& worker : workers)
+		{
+			worker.join();
+		}
+	}
+	else
+	{
+		std::cout << "Calculating closures using main thread...\n";
+	}
+	//Finish the leftover closures on the main thread
+	for (size_t i = step * threadCount; i < itemsets.size(); ++i)
+	{
+		//The closure of an itemset contains at least itself.
+		Itemset closure{ itemsets[i].GetItems() };
+		//If another itemset has the same TID, add its items to the closure.
+		for (size_t j = 0; j < itemsets.size(); ++j)
+		{
+			if (i == j)
+				continue;
+			if (itemsets[i].IsTIDIncluded(itemsets[j]))
+			{
+				closure += itemsets[j];
+			}
+		}
+		closures[i] = std::move(closure);
 	}
 }
 
