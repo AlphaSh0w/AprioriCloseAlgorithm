@@ -7,7 +7,7 @@
 std::string fileName = "airlines.csv";
 std::vector<std::string> discretizeColumns = { "Flight","Time","Length" };
 std::vector<int> binSizes = { 10,10,10 };
-const float minSup = 0.0005f;
+const float minSup = 0.005f;
 
 int main()
 {

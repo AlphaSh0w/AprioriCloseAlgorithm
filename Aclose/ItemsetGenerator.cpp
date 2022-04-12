@@ -153,11 +153,11 @@ void ItemsetGenerator::CalculateClosuresThreaded()
 	const size_t hardwareThreadCount = std::thread::hardware_concurrency();
 	const size_t threadCount = std::min(itemsets.size() / minItemsPerThread, hardwareThreadCount * 2);
 	size_t step = 0;
+	//Reserve the space for closures.
+	closures.resize(itemsets.size());
 	if (threadCount != 0)
 	{
 		std::cout << "Calculating closures for " << itemsets.size() <<" using " << threadCount << " thread(s)...\n";
-		//Reserve the space for closures.
-		closures.resize(itemsets.size());
 		//Divide the closures between all threads evenly.
 		step = itemsets.size() / threadCount;
 		std::vector<std::thread> workers;
