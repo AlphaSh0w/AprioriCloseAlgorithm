@@ -1,11 +1,11 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "ItemsetGenerator.h"
+#include "Itemset.h"
 class Rule
 {
 public:
-	//Constructor, calculates the confidence and lift using the kGenerators.
+	//Constructor, calculates the confidence using the kGenerators.
 	Rule(const Itemset& itemset, const Itemset& closure);
 	std::string ToString(const std::vector<std::string>& columnNames) const;
 	const std::vector<Itemset::Item>& GetLeftHandSide() const;

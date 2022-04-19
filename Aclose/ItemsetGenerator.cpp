@@ -133,7 +133,7 @@ void ItemsetGenerator::CalculateClosures()
 	{
 		//The closure of an itemset contains at least itself.
 		Itemset closure{itemsets[i].GetItems()};
-		//If another itemset has the same TID, add its items to the closure.
+		//If another itemset's TID includes the TID of the current itemset, add its items to the closure.
 		for (size_t j = 0; j < itemsets.size(); ++j)
 		{
 			if(i == j)
