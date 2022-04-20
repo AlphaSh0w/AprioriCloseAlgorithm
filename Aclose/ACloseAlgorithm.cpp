@@ -26,7 +26,7 @@ void ACloseAlgorithm::CreateFirstGenerator(float minSupport)
 	ItemsetGenerator firstGenerator{ currentLevel };
 	firstGenerator.GenerateFirstItemsetsThreaded(document);
 	std::cout << "Prunning unfrequent itemsets (minSupport = " << minSupport << " )...\n";
-	firstGenerator.PruneUnfrequentItemsets(minSupport, document.GetRowCount());
+	firstGenerator.PruneUnfrequentItemsets(minSupport);
 	std::cout << firstGenerator.GetItemsets().size() << " itemset(s) left.\n";
 	if (firstGenerator.IsEmpty())
 	{
@@ -45,9 +45,9 @@ bool ACloseAlgorithm::CreateKGenerator(float minSupport)
 	ItemsetGenerator generator{ currentLevel };
 	generator.GenerateItemsets(kGenerators.back());
 	std::cout << "Found " << generator.GetItemsets().size() << " itemsets.\n";
-	generator.CalculateTIDsThreaded();
+	generator.CalculateTIDsThreaded(document.GetRowCount());
 	std::cout << "Prunning unfrequent itemsets (minSupport = " << minSupport << " )...\n";
-	generator.PruneUnfrequentItemsets(minSupport, document.GetRowCount());
+	generator.PruneUnfrequentItemsets(minSupport);
 	std::cout << generator.GetItemsets().size() << " itemset(s) left.\n";
 	std::cout << "Pruning using closures...\n";
 	generator.PruneUsingClosures(kGenerators.back());

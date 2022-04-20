@@ -47,7 +47,7 @@ void ItemsetGenerator::GenerateFirstItemsetsThreaded(const rapidcsv::Document& d
 	{
 		for (auto& valueTIDpair : tids[iColumn])
 		{
-			itemsets.emplace_back(std::vector{std::pair{iColumn,valueTIDpair.first}},std::move(valueTIDpair.second));
+			itemsets.emplace_back(std::vector{std::pair{iColumn,valueTIDpair.first}},std::move(valueTIDpair.second), document.GetRowCount());
 		}
 	}
 	std::cout << "Generated " << itemsets.size() << " 1-Itemsets and their TIDs.\n";
@@ -78,7 +78,7 @@ void ItemsetGenerator::GenerateItemsets(const ItemsetGenerator& previousGenerato
 	}
 }
 
-void ItemsetGenerator::CalculateTIDsThreaded()
+void ItemsetGenerator::CalculateTIDsThreaded(size_t rowCount)
 {
 	const size_t minItemsPerThread = 100;
 	const size_t hardwareThreadCount = std::thread::hardware_concurrency();
@@ -90,10 +90,10 @@ void ItemsetGenerator::CalculateTIDsThreaded()
 		//Divide the itemsets between all threads evenly.
 		step = itemsets.size() / threadCount;
 		std::vector<std::thread> workers;
-		auto worker = [this](size_t start, size_t end) {
+		auto worker = [this,rowCount](size_t start, size_t end) {
 			for (size_t i = start; i < end; ++i)
 			{
-				itemsets[i].CalculateTID();
+				itemsets[i].CalculateTID(rowCount);
 			}
 		};
 		for (size_t i = 0; i < threadCount; ++i)
@@ -112,15 +112,15 @@ void ItemsetGenerator::CalculateTIDsThreaded()
 	//Finish the leftover itemsets on the main thread
 	for (size_t i = step * threadCount; i < itemsets.size(); ++i)
 	{
-		itemsets[i].CalculateTID();
+		itemsets[i].CalculateTID(rowCount);
 	}
 }
 
-void ItemsetGenerator::PruneUnfrequentItemsets(float minSupport, size_t rowCount)
+void ItemsetGenerator::PruneUnfrequentItemsets(float minSupport)
 {
 	auto toErase = std::remove_if(itemsets.begin(), itemsets.end(),
-		[minSupport,rowCount](const Itemset& itemset){
-			return itemset.GetSupport(rowCount) < minSupport;
+		[minSupport](const Itemset& itemset){
+			return itemset.GetSupport() < minSupport;
 		});
 	itemsets.erase(toErase, itemsets.end());
 }
@@ -230,7 +230,7 @@ const Itemset& ItemsetGenerator::GetItemset(const std::vector<Itemset::Item>& it
 	auto iterator = std::find_if(itemsets.begin(), itemsets.end(), [&items](const Itemset& itemset) {
 			return !std::equal(items.begin(), items.end(), itemset.GetItems().begin());
 		});
-	assert(iterator != items.end());//The itemset should always be found, otherwise it means that the given items are unfrequent.
+	assert(iterator != itemsets.end());//The itemset should always be found, otherwise it means that the given items are unfrequent.
 	return *iterator;
 }
 

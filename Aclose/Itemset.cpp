@@ -6,11 +6,12 @@ Itemset::Itemset(const std::vector<Item>& items)
 {
 }
 
-Itemset::Itemset(std::vector<Item> items, std::vector<size_t> tid)
+Itemset::Itemset(std::vector<Item> items, std::vector<size_t> tid, size_t rowCount)
 	:
 	items(std::move(items)),
 	tid(std::move(tid))
 {
+	support = static_cast<float>(this->tid.size()) / rowCount;
 }
 
 Itemset::Itemset(std::vector<Item> items, const Itemset* first, const Itemset* second)
@@ -21,7 +22,7 @@ Itemset::Itemset(std::vector<Item> items, const Itemset* first, const Itemset* s
 {
 }
 
-void Itemset::CalculateTID()
+void Itemset::CalculateTID(size_t rowCount)
 {
 	assert(first != nullptr && second != nullptr); //To calculate its TID, this itemset needs to be created from a union of two other itemsets.
 	//Performs an intersection between the TIDs of the two itemsets that were used to create this itemset.
@@ -30,6 +31,7 @@ void Itemset::CalculateTID()
 		second->tid.begin(), second->tid.end(),
 		std::back_inserter(tid)
 	);
+	support = static_cast<float>(this->tid.size()) / rowCount;
 }
 
 bool Itemset::HasSameFirstKItems(const Itemset& other, size_t k) const
@@ -91,7 +93,8 @@ const std::vector<Itemset::Item>& Itemset::GetItems() const
 	return items;
 }
 
-float Itemset::GetSupport(const size_t rowCount) const
+float Itemset::GetSupport() const
 {
-	return static_cast<float>(tid.size()) / rowCount;
+	assert(support != -1.f);//Support should be calculated before being used.
+	return support;
 }

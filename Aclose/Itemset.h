@@ -11,11 +11,11 @@ public:
 	//Constructor to create an itemset from a list of items.
 	Itemset(const std::vector<Item>& items);
 	//Constructor to create an itemset from a list of items and provide a pre-built TID.
-	Itemset(std::vector<Item> items, std::vector<size_t> tid);
+	Itemset(std::vector<Item> items, std::vector<size_t> tid, size_t rowCount);
 	//Constructor used to indicate which itemsets were merged when creating this itemset.
 	Itemset(std::vector<Item> items, const Itemset* first, const Itemset* second);
 	//Calculates the TID directly from the TIDs of the merged itemsets.
-	void CalculateTID();
+	void CalculateTID(size_t rowCount);
 	//Indicates if the provided itemset shares the first k items as this one.
 	bool HasSameFirstKItems(const Itemset& other, size_t k) const;
 	//Indicates if the TID of this itemset is included in the TID of the other itemset.
@@ -31,7 +31,7 @@ public:
 	//Performs a union between the items and stores the result in this itemset.
 	Itemset& operator +=(const Itemset& rhs);
 	const std::vector<Item>& GetItems() const;
-	float GetSupport(const size_t rowCount) const;
+	float GetSupport() const;
 private:
 	std::vector<Item> items;
 	std::vector<size_t> tid;

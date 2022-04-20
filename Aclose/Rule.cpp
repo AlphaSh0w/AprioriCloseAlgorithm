@@ -18,7 +18,7 @@ Rule::Rule(const Itemset& itemset, const Itemset& closure, const std::vector<Ite
 
 	//Calculate the lift
 	//We need the support of the right hand side to calculate the lift, so we search for it in its corresponding kGenerator.
-	size_t k = rightHandSide.size();
+	size_t k = rightHandSide.size()-1;
 	const auto& kGenerator = kGenerators[k];
 	const Itemset& rItemset = kGenerator.GetItemset(rightHandSide);
 

@@ -12,9 +12,9 @@ public:
 	//Generates the (level) Itemsets from the (level - 1) generator.
 	void GenerateItemsets(const ItemsetGenerator& previousGenerator);
 	//Calculates the TIDs of the itemsets using multi-threading.
-	void CalculateTIDsThreaded();
+	void CalculateTIDsThreaded(size_t rowCount);
 	//Removes the unfrequent itemsets.
-	void PruneUnfrequentItemsets(float minSupport, size_t rowCount);
+	void PruneUnfrequentItemsets(float minSupport);
 	//Calculates the closure of each itemset.
 	void CalculateClosures();
 	void CalculateClosuresThreaded();
