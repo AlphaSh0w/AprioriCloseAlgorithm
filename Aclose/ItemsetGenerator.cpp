@@ -223,6 +223,17 @@ void ItemsetGenerator::PruneUsingClosures(const ItemsetGenerator& previousGenera
 	itemsets.erase(toErase, itemsets.end());
 }
 
+const Itemset& ItemsetGenerator::GetItemset(const std::vector<Itemset::Item>& items) const
+{
+	assert(items.size() == level);//The given number of items should match the level of the generator.
+	//Look for the itemset that has the given items
+	auto iterator = std::find_if(itemsets.begin(), itemsets.end(), [&items](const Itemset& itemset) {
+			return !std::equal(items.begin(), items.end(), itemset.GetItems().begin());
+		});
+	assert(iterator != items.end());//The itemset should always be found, otherwise it means that the given items are unfrequent.
+	return *iterator;
+}
+
 const std::vector<Itemset>& ItemsetGenerator::GetItemsets() const
 {
 	return itemsets;

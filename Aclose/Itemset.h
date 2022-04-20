@@ -35,7 +35,7 @@ public:
 private:
 	std::vector<Item> items;
 	std::vector<size_t> tid;
-
+	float support = -1.f;
 	//Used to keep track of which itemsets were merged to create this itemset.
 	const Itemset* first = nullptr;
 	const Itemset* second = nullptr;

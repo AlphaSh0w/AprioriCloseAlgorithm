@@ -20,6 +20,8 @@ public:
 	void CalculateClosuresThreaded();
 	//Removes itemsets that are included in the closures of the previous generator.
 	void PruneUsingClosures(const ItemsetGenerator& previousGenerator);
+	//Gets the itemset that has the given items.
+	const Itemset& GetItemset(const std::vector<Itemset::Item>& items) const;
 	const std::vector<Itemset>& GetItemsets() const;
 	const std::vector<Itemset>& GetClosures() const;
 	bool IsEmpty() const;

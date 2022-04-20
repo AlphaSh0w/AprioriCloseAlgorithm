@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <format>
 
-Rule::Rule(const Itemset& itemset, const Itemset& closure)
+Rule::Rule(const Itemset& itemset, const Itemset& closure, const std::vector<ItemsetGenerator>& kGenerators)
 	:
 	confidence(1.f)
 {
@@ -15,7 +15,15 @@ Rule::Rule(const Itemset& itemset, const Itemset& closure)
 	std::set_difference(closureItems.begin(), closureItems.end(),
 						itemsetItems.begin(),itemsetItems.end(),
 						std::back_inserter(rightHandSide));
+
+	//Calculate the lift
+	//We need the support of the right hand side to calculate the lift, so we search for it in its corresponding kGenerator.
+	size_t k = rightHandSide.size();
+	const auto& kGenerator = kGenerators[k];
+	const Itemset& rItemset = kGenerator.GetItemset(rightHandSide);
+
 }
+
 
 std::string Rule::ToString(const std::vector<std::string>& columnNames) const
 {

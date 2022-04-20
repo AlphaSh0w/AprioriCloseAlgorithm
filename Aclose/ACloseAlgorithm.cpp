@@ -75,7 +75,7 @@ void ACloseAlgorithm::GenerateRules()
 			//Only generate a rule if closure is bigger than itemset.
 			if (!itemsets[i].hasSameItems(closureSets[i]))
 			{
-				rules.emplace_back(itemsets[i],closureSets[i]);
+				rules.emplace_back(itemsets[i],closureSets[i], kGenerators);
 			}
 		}
 	}
