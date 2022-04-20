@@ -33,7 +33,7 @@ void ACloseAlgorithm::CreateFirstGenerator(float minSupport)
 		std::cout << "Stopping algorithm.\n";
 		return;
 	}
-	firstGenerator.CalculateClosures();
+	firstGenerator.CalculateClosuresThreaded();
 	kGenerators.emplace_back(std::move(firstGenerator));
 	++currentLevel;
 }
