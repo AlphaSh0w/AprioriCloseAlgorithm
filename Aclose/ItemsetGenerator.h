@@ -6,6 +6,7 @@
 class ItemsetGenerator
 {
 public:
+	ItemsetGenerator() = default;
 	ItemsetGenerator(size_t level);
 	//Generates the level 1 Itemsets from a document.
 	void GenerateFirstItemsetsThreaded(const rapidcsv::Document& document);

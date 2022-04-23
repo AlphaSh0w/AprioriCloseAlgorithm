@@ -26,6 +26,8 @@ public:
 	bool IsValid() const;
 	//Indicates if the itemset contains the same items as other.
 	bool hasSameItems(const Itemset& other) const;
+	//Gets the TID of this itemset
+	const std::vector<size_t>& GetTID() const;
 	//Performs a union between the items and returns the result in an itemset.
 	Itemset operator +(const Itemset& rhs) const;
 	//Performs a union between the items and stores the result in this itemset.

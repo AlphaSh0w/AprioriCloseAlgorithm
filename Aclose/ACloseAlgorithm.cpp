@@ -25,6 +25,8 @@ void ACloseAlgorithm::CreateFirstGenerator(float minSupport)
 	std::cout << "\n\nGenerating 1-Itemsets...\n";
 	ItemsetGenerator firstGenerator{ currentLevel };
 	firstGenerator.GenerateFirstItemsetsThreaded(document);
+	//Save the first generator's content before pruning
+	firstItemsetsCopy = firstGenerator;
 	std::cout << "Prunning unfrequent itemsets (minSupport = " << minSupport << " )...\n";
 	firstGenerator.PruneUnfrequentItemsets(minSupport);
 	std::cout << firstGenerator.GetItemsets().size() << " itemset(s) left.\n";
@@ -75,7 +77,7 @@ void ACloseAlgorithm::GenerateRules()
 			//Only generate a rule if closure is bigger than itemset.
 			if (!itemsets[i].hasSameItems(closureSets[i]))
 			{
-				rules.emplace_back(itemsets[i],closureSets[i], kGenerators);
+				rules.emplace_back(itemsets[i],closureSets[i], kGenerators,document.GetRowCount());
 			}
 		}
 	}

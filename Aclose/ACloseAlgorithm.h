@@ -17,6 +17,7 @@ private:
 private:
 	std::vector<ItemsetGenerator> kGenerators;
 	std::vector<Rule> rules;
+	ItemsetGenerator firstItemsetsCopy;
 	size_t currentLevel = 1;
 	const rapidcsv::Document& document;
 };

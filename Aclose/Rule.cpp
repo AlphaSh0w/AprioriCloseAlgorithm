@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <format>
 
-Rule::Rule(const Itemset& itemset, const Itemset& closure, const std::vector<ItemsetGenerator>& kGenerators)
+Rule::Rule(const Itemset& itemset, const Itemset& closure, const std::vector<ItemsetGenerator>& kGenerators, size_t numRows)
 	:
 	confidence(1.f),
 	lift(-1.f)
@@ -28,7 +28,19 @@ Rule::Rule(const Itemset& itemset, const Itemset& closure, const std::vector<Ite
 	else
 	{
 		//We won't find it in the generators, gotta calculate the TID.
-
+		const auto& firstKGenerator = kGenerators[0];
+		const Itemset& item = firstKGenerator.GetItemset(std::vector{rightHandSide[0]});
+		std::vector<size_t> intersectedTID = item.GetTID();
+		std::vector<size_t> temp;
+		for (size_t i = 1; i <= k; ++i)
+		{
+			const Itemset& otherItem = firstKGenerator.GetItemset(std::vector{rightHandSide[i]});
+			std::set_intersection(intersectedTID.begin(),intersectedTID.end(),
+								  otherItem.GetTID().begin(),otherItem.GetTID().end(),
+								  std::back_inserter(temp));
+			intersectedTID = std::move(temp);
+		}
+		lift = itemset.GetSupport() / (itemset.GetSupport() * (intersectedTID.size()/numRows));
 	}
 	
 }

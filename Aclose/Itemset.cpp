@@ -65,6 +65,11 @@ bool Itemset::hasSameItems(const Itemset& other) const
 	return HasSameFirstKItems(other, items.size());
 }
 
+const std::vector<size_t>& Itemset::GetTID() const
+{
+	return tid;
+}
+
 Itemset Itemset::operator+(const Itemset& rhs) const
 {
 	std::vector<Item> itemsUnion;
