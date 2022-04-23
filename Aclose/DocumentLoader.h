@@ -13,6 +13,7 @@
 class DocumentLoader
 {
 public:
+	DocumentLoader() = default;
 	/*
 	* @brief Constructor.
 	* @param path : The name or path of the csv file to read.
@@ -21,6 +22,10 @@ public:
 		:
 		document(path)
 	{
+	}
+	void LoadFile(const std::string& path)
+	{
+		document = rapidcsv::Document(path);
 	}
 	/*
 	* @brief Writes the current state of the document to disk.

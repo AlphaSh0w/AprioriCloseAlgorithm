@@ -4,13 +4,68 @@
 #include "Timer.h"
 #include "ACloseAlgorithm.h"
 
-std::string fileName = "ClassData.csv";
-std::vector<std::string> discretizeColumns = { "raisedhands","VisITedResources","AnnouncementsView","Discussion" };
-std::vector<int> binSizes = { 10,10,10,10 };
-const float minSup = 0.15f;
+
 
 int main()
 {
+    std::string fileName;
+    std::vector<std::string> discretizeColumns;
+    std::vector<int> binSizes;
+    float minSup;
+    DocumentLoader documentLoader;
+    while (true)
+    {
+        std::cout << "Enter a valid file name : ";
+        std::cin >> fileName;
+        try
+        {
+            documentLoader.LoadFile(fileName);
+            break;
+        }
+        catch (std::ios_base::failure e)
+        {
+            //File not found, do nothing and loop back.
+            std::cout << "\n";
+        }
+    }
+    //Display the column names
+    std::cout << "\nDetected columns :\n";
+    auto documentColumnNames = documentLoader.GetDocumentColumnNames();
+    for (const auto& column : documentColumnNames)
+    {
+        std::cout << column << ", ";
+    }
+    std::cout << "\nProvide the columns to discretize (type q to finish) :\n";
+    std::string columnName;
+    //Ask about which columns to discretize
+    while (true)
+    {
+        //Ask about the column name
+        while (true)
+        {
+            std::cout << "Column name : ";
+            std::cin >> columnName;
+            if (columnName == "q")
+                break;
+            if (std::find(documentColumnNames.begin(), documentColumnNames.end(), columnName) != documentColumnNames.end())
+            {
+                discretizeColumns.emplace_back(columnName);
+                break;
+            }
+            std::cout << "\nInvalid column name.\n";
+
+        }
+        if (columnName == "q")
+        {
+            break;
+        }
+        //Ask about the bin size
+        size_t binSize;
+        std::cout << "Number of bins : ";
+        std::cin >> binSize;
+        binSizes.push_back(binSize);
+    }
+    //Execute with the given parameters
     std::cout << "Loading csv ... ";
     Timer<std::chrono::milliseconds> timer{};
     //Load the airlines csv
