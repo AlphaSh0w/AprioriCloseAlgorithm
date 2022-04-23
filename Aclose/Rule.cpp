@@ -4,8 +4,7 @@
 
 Rule::Rule(const Itemset& itemset, const Itemset& closure, const std::vector<ItemsetGenerator>& kGenerators)
 	:
-	confidence(1.f),
-	lift(-1.f)
+	confidence(1.f)
 {
 	const auto& itemsetItems = itemset.GetItems();
 	const auto& closureItems = closure.GetItems();
@@ -18,19 +17,12 @@ Rule::Rule(const Itemset& itemset, const Itemset& closure, const std::vector<Ite
 						std::back_inserter(rightHandSide));
 	//We need the support of the right hand side to calculate the lift, so we search for it in its corresponding kGenerator.
 	size_t k = rightHandSide.size()-1;
-	if (k <= kGenerators.size() - 1)
-	{
-		//it has already been calculated, get its TID
-		const auto& kGenerator = kGenerators[k];
-		const Itemset& rItemset = kGenerator.GetItemset(rightHandSide);
-		lift = itemset.GetSupport() / (itemset.GetSupport() * rItemset.GetSupport());
-	}
-	else
-	{
-		//We won't find it in the generators, gotta calculate the TID.
 
-	}
-	
+	//it has already been calculated, get its TID
+	const auto& kGenerator = kGenerators[k];
+	const Itemset& rItemset = kGenerator.GetItemset(rightHandSide);
+	lift = itemset.GetSupport() / (itemset.GetSupport() * rItemset.GetSupport());
+
 }
 
 
