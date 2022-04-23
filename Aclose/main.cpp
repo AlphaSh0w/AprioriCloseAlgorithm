@@ -8,10 +8,12 @@
 
 int main()
 {
+    rapidcsv::Document settings{"discretizationSettings.csv"};
+    std::vector<std::string> discretizeColumns = settings.GetColumn<std::string>(0);
+    std::vector<int> binSizes = settings.GetColumn<int>(1);
     std::string fileName;
-    std::vector<std::string> discretizeColumns;
-    std::vector<int> binSizes;
-    float minSup;
+  
+    float minSup = 0.015f;
     DocumentLoader documentLoader;
     while (true)
     {
@@ -20,6 +22,7 @@ int main()
         try
         {
             documentLoader.LoadFile(fileName);
+            std::cout << "\ncsv loaded.\n";
             break;
         }
         catch (std::ios_base::failure e)
@@ -28,56 +31,17 @@ int main()
             std::cout << "\n";
         }
     }
-    //Display the column names
-    std::cout << "\nDetected columns :\n";
-    auto documentColumnNames = documentLoader.GetDocumentColumnNames();
-    for (const auto& column : documentColumnNames)
-    {
-        std::cout << column << ", ";
-    }
-    std::cout << "\nProvide the columns to discretize (type q to finish) :\n";
-    std::string columnName;
-    //Ask about which columns to discretize
-    while (true)
-    {
-        //Ask about the column name
-        while (true)
-        {
-            std::cout << "Column name : ";
-            std::cin >> columnName;
-            if (columnName == "q")
-                break;
-            if (std::find(documentColumnNames.begin(), documentColumnNames.end(), columnName) != documentColumnNames.end())
-            {
-                discretizeColumns.emplace_back(columnName);
-                break;
-            }
-            std::cout << "\nInvalid column name.\n";
-
-        }
-        if (columnName == "q")
-        {
-            break;
-        }
-        //Ask about the bin size
-        size_t binSize;
-        std::cout << "Number of bins : ";
-        std::cin >> binSize;
-        binSizes.push_back(binSize);
-    }
+    std::cout << "\nEnter the minSup : ";
+    std::cin >> minSup;
+    
     //Execute with the given parameters
-    std::cout << "Loading csv ... ";
-    Timer<std::chrono::milliseconds> timer{};
-    //Load the airlines csv
-    DocumentLoader dataset{ fileName };
-    std::cout << "took " << timer.Mark() << " miliseconds\n";
-
+    
     std::cout << "Discretizing ... ";
-    timer.Mark();
-    dataset.Discretize<float>(discretizeColumns, binSizes);
+    Timer<std::chrono::milliseconds> timer{};
+    documentLoader.Discretize<float>(discretizeColumns, binSizes);
     std::cout << "took " << timer.Mark() << " miliseconds\n";
 
-    ACloseAlgorithm aClose{dataset.GetDocument()};
+    ACloseAlgorithm aClose{documentLoader.GetDocument()};
     std::cout << "Running AClose Algorithm ... ";
     timer.Mark();
     aClose.Run(minSup);
@@ -85,7 +49,7 @@ int main()
     std::cout << "\nDisplaying " << aClose.GetRules().size() << " rules: \n";
     for (const auto& rule : aClose.GetRules())
     {
-        auto columnNames = dataset.GetDocumentColumnNames();
+        auto columnNames = documentLoader.GetDocumentColumnNames();
         std::cout << rule.ToString(columnNames);
     }
     std::cout << "Displayed " << aClose.GetRules().size() << " rules. \n";
