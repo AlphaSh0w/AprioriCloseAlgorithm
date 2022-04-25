@@ -158,9 +158,9 @@
     <ClCompile Include="Rule.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Airlines-discretized.csv" />
     <None Include="airlines.csv" />
     <None Include="ClassData.csv" />
+    <None Include="discretizationSettings.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

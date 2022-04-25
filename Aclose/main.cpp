@@ -23,6 +23,7 @@ int main()
         {
             documentLoader.LoadFile(fileName);
             std::cout << "\ncsv loaded.\n";
+            auto temp = documentLoader.GetDocument().GetColumn<std::string>(0);
             break;
         }
         catch (std::ios_base::failure e)

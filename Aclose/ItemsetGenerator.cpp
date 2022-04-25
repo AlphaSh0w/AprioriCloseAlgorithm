@@ -26,7 +26,10 @@ void ItemsetGenerator::GenerateFirstItemsetsThreaded(const rapidcsv::Document& d
 			auto column = document.GetColumn<std::string>(iColumn);
 			for (size_t iRow = 0; iRow < column.size(); ++iRow)
 			{
-				tids[iColumn][column[iRow]].emplace_back(iRow);
+				if (column[iRow] != "?")
+				{
+					tids[iColumn][column[iRow]].emplace_back(iRow);
+				}
 			}
 		};
 		workers.push_back(std::thread{ worker, std::ref(document), iColumn });

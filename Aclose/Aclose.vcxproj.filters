@@ -55,10 +55,10 @@
     <None Include="airlines.csv">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Airlines-discretized.csv">
+    <None Include="ClassData.csv">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="ClassData.csv">
+    <None Include="discretizationSettings.csv">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
