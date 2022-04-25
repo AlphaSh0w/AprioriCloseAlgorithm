@@ -45,7 +45,8 @@ int main()
     std::cout << "Running AClose Algorithm ... ";
     timer.Mark();
     aClose.Run(minSup);
-    std::cout << "\n\nAlgorithm took " << timer.Mark() << " miliseconds.\n";
+    long long algorithmTime = timer.Mark();
+    std::cout << "\n\nAlgorithm took " << algorithmTime << " miliseconds.\n";
     std::cout << "\nDisplaying " << aClose.GetRules().size() << " rules: \n";
     for (const auto& rule : aClose.GetRules())
     {
@@ -53,6 +54,7 @@ int main()
         std::cout << rule.ToString(columnNames);
     }
     std::cout << "Displayed " << aClose.GetRules().size() << " rules. \n";
+    std::cout << "\n\nAlgorithm took " << algorithmTime << " miliseconds.\n";
     //Save the new document to disk
     //dataset.SaveDocument("ClassData-discretized.csv");
 }
